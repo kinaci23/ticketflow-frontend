@@ -14,3 +14,9 @@ export interface UserRegisterDto {
 export interface AuthResponseDto {
   token: string;
 }
+
+export interface TokenPayload {
+  username: string;
+  role: string;
+  exp: number; 
+}

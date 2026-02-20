@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service'; // Servisimizi aldık
 import { UserLoginDto } from '../../../core/models/auth.model'; // DTO'muzu aldık
+import { Router } from '@angular/router'; // Router'ı aldık   
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   // Dependency Injection (DI) kuralımıza uyarak servisi içeri alıyoruz
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -41,17 +43,22 @@ export class LoginComponent implements OnInit {
 
     // Component HTTP isteği atmaz, sadece servisi çağırır! (Single Responsibility)
     this.authService.login(loginData).subscribe({
-      next: (response) => {
-        // Başarılı olursa token'ı tarayıcıya kaydet ve haber ver
-        console.log("🎉 Giriş Başarılı! Token:", response.token);
-        localStorage.setItem('token', response.token);
-        alert("Giriş Başarılı! Backend'den Token Alındı 🚀");
+      next: (res) => {
+        localStorage.setItem('token', res.token); // Token'ı kaydet
+
+        // 🚀 AKILLI YÖNLENDİRME (Trafik Polisi)
+        const decoded = this.authService.getDecodedToken();
+        const userRole = decoded ? decoded.role : null;
+
+        if (userRole === 'Admin') {
+          // Admin ise direkt Tüm Biletlere şutla
+          this.router.navigate(['/dashboard/all-tickets']); 
+        } else {
+          // Normal kullanıcı ise Kendi Biletlerine şutla
+          this.router.navigate(['/dashboard/my-tickets']); 
+        }
       },
-      error: (err) => {
-        // Hata olursa (şifre yanlış vs.) konsola bas
-        console.error("❌ Login Hatası:", err);
-        alert("Giriş Başarısız! Kullanıcı adı veya şifre hatalı.");
-      }
+      error: (err) => alert("Giriş başarısız!")
     });
   }
 }
