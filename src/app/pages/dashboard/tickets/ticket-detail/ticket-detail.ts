@@ -34,13 +34,24 @@ export class TicketDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const decoded = this.authService.getDecodedToken();
+    const decoded = this.authService.getDecodedToken() as any;
     this.userRole = decoded ? decoded.role : null;
+    
+    // 🚀 ÇÖZÜM 1: Giriş yapan kişinin ID'sini Token'dan çekiyoruz
+    // (Token içindeki anahtar ismine göre nameid, sub veya UserId olabilir)
+    this.currentUserId = decoded ? Number(decoded.nameid || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || decoded.sub) : 0;
+    
     this.route.paramMap.subscribe(params => {
       const idParam = params.get('id');
       if (idParam) {
         this.currentTicketId = Number(idParam);
-        this.loadTicket(Number(idParam));
+        
+        // Biletin detaylarını yükle
+        this.loadTicket(this.currentTicketId);
+        
+        // 🚀 ÇÖZÜM 2: SAYFA AÇILDIĞINDA MESAJLARI DA YÜKLE!
+        this.loadMessages(this.currentTicketId);
+        
       } else {
         this.router.navigate(['/dashboard']);
       }

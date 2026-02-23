@@ -7,7 +7,7 @@ import { Ticket, TicketCreateDto, TicketUpdateDto, TicketMessage, AddMessageDto 
   providedIn: 'root'
 })
 export class TicketService {
-  private apiUrl = 'https://localhost:7139/api/Tickets'; // Backend URL'ni kontrol et
+  private apiUrl = 'https://localhost:7139/api/Tickets'; 
 
   constructor(private http: HttpClient) {}
 

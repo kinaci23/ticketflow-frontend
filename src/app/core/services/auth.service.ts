@@ -21,7 +21,6 @@ export class AuthService {
     return this.http.post<AuthResponseDto>(`${this.apiUrl}/register`, userData);
   }
 
-  // 🚀 YENİ METODLAR SINIFIN İÇİNDE OLMALI:
   getDecodedToken(): TokenPayload | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
@@ -43,4 +42,4 @@ export class AuthService {
     date.setUTCSeconds(decoded.exp);
     return date.valueOf() > new Date().valueOf();
   }
-} // ⚠️ Sınıfın en son parantezi burada olmalı!
+} 
