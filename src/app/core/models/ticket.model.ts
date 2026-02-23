@@ -6,9 +6,9 @@ export interface Ticket {
   urgency: string;
   createdAt: Date;
   userName: string;
-  predictedCategoryId?: number; // Soru işareti (?) koyduk çünkü null gelebilir
+  predictedCategoryId?: number; 
   finalCategoryId?: number;
-  adminResponse?: string | null; // Admin'in eklediği açıklama, eğer varsa
+  adminResponse?: string | null; 
 }
 
 export interface TicketCreateDto {
@@ -21,12 +21,9 @@ export interface TicketUpdateDto {
   ticketId: number;
   status: string;
   finalCategoryId: number;
-  adminResponse: string | null; // Admin'in eklediği açıklama, eğer varsa
+  adminResponse: string | null; 
 } 
 
-// 🚀 CHAT SİSTEMİ İÇİN YENİ EKLENEN MODELLER
-
-// SQL'den bize gelecek olan mesajın formatı
 export interface TicketMessage {
   messageId: number;
   ticketId: number;
@@ -34,10 +31,9 @@ export interface TicketMessage {
   messageText: string;
   createdAt: string | Date;
   senderName: string;
-  senderRoleId: number; // 1: Admin, 2: User (Senin sistemindeki id'lere göre değişebilir)
+  senderRoleId: number; 
 }
 
-// Bizim C#'a göndereceğimiz yeni mesaj paketi
 export interface AddMessageDto {
   ticketId: number;
   messageText: string;

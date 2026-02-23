@@ -11,12 +11,10 @@ const routes: Routes = [
     component: LayoutComponent, // Ana iskeletimiz
     canActivate: [AuthGuard], // Güvenlik kapımız
     children: [
-      // Alt rotalar (router-outlet içine yüklenecek olanlar)
       { path: '', redirectTo: 'my-tickets', pathMatch: 'full' }, 
       { path: 'my-tickets', component: TicketListComponent },
       { path: 'create-ticket', component: TicketCreateComponent },
       { path: 'all-tickets', component: TicketListComponent },
-      // 🚀 DÜZELTME: 'tickets/:id' yerine 'ticket/:id' yaptık! (HTML ile birebir aynı)
       { path: 'ticket/:id', component: TicketDetailComponent }
     ]
   }
